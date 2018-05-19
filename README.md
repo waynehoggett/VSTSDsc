@@ -10,3 +10,4 @@ A class-based Desired State Configuration Resource to deploy the VSTS
 
 Deploy an agent on Windows - https://docs.microsoft.com/en-us/vsts/build-release/actions/agents/v2-windows
 vsts-agent - https://github.com/Microsoft/vsts-agent
+Build and Release Agents - https://docs.microsoft.com/en-us/vsts/build-release/concepts/agents/agents
