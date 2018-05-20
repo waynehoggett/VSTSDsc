@@ -1,6 +1,18 @@
 # VSTSDsc
 A class-based Desired State Configuration Resource to deploy the VSTS Agent
 
+## Example
+
+```powershell
+VSTSAgent VSTSAgentInstall #ResourceName  
+{  
+    DestinationPath = "C:\Agent\"  
+    PAT = "wt26usi4zdhqagzyb4xvox2fq362qlqet4a3o2veej2brbmgapja"  
+    Pool = "Default"  
+    Uri = "https://vstsagentpackage.azureedge.net/agent/2.133.3/vsts-agent-win-x64-2.133.3.zip"  
+}  
+```
+
 ## Planned Future Releases
 
 0.4 - Support of running interactively (not as a service)  
