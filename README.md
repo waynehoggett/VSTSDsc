@@ -9,7 +9,8 @@ VSTSAgent VSTSAgentInstall #ResourceName
     DestinationPath = "C:\Agent\"  
     PAT = "wt26usi4zdhqagzyb4xvox2fq362qlqet4a3o2veej2brbmgapja"  
     Pool = "Default"  
-    Uri = "https://vstsagentpackage.azureedge.net/agent/2.133.3/vsts-agent-win-x64-2.133.3.zip"  
+    AgentUri = "https://vstsagentpackage.azureedge.net/agent/2.133.3/vsts-agent-win-x64-2.133.3.zip"
+    AccountUri = "https://waynehoggett.visualstudio.com"  
 }  
 ```
 

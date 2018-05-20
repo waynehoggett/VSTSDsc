@@ -10,7 +10,10 @@ class VSTSAgent {
     [string]$PAT
 
     [DscProperty(Mandatory)]
-    [string]$Uri
+    [string]$AgentUri
+
+    [DscProperty(Mandatory)]
+    [string]$AccountUri
 
     [DscProperty(NotConfigurable)]
     [string]$ServiceName
@@ -18,26 +21,30 @@ class VSTSAgent {
     [void]Set(){
 
         #Check the path exists
-        if (-not (Test-Path $this.Path -ErrorAction SilentlyContinue)) {
+        if (-not (Test-Path $this.DestinationPath -ErrorAction SilentlyContinue)) {
             throw "Path $($this.DestinationPath) is not valid"
         }
 
         #Check the path is a directory
-        if (Get-Item -Path $($This.Path) -is [System.IO.FileInfo]) {
-            throw "DestinationPath $($This.Path) must be a directory"
+        if (((Get-Item -Path "$($This.DestinationPath)" -ErrorAction SilentlyContinue).GetType().Name) -ne  "DirectoryInfo") {
+            throw "DestinationPath $($This.DestinationPath) must be a directory"
         }
 
-        #Check the Uri is valid
-        $regex = "http*://*"
-        if ($this.Uri -notmatch $regex) {
-            throw "Uri: $($This.uri) must be a valid Uri"
+        #Check the AgentUri is valid
+        if ($($This.AgentUri) -notlike "http*://*") {
+            throw "Uri: $($This.AgentUri) must be a valid Uri"
+        }
+
+        #Check the AccountUri is valid
+        if ($($This.AccountUri) -notlike "http*://*") {
+            throw "Uri: $($This.AccountUri) must be a valid Uri"
         }
 
         #Download File
         try {
-            (New-Object System.Net.WebClient).DownloadFile($This.Uri, "$($this.DestinationPath)\agent.zip")
+            (New-Object System.Net.WebClient).DownloadFile($This.AgentUri, "$($this.DestinationPath)\agent.zip")
         } catch {
-            throw "Failed to download agent from $($This.Uri) to $($this.DestinationPath)"
+            throw "Failed to download agent from $($This.AgentUri) to $($this.DestinationPath)"
         }
 
         #Unblock File
@@ -45,14 +52,14 @@ class VSTSAgent {
 
         #Expand Archive
         try {
-            Expand-Archive -Path "$($this.DestinationPath)\agent.zip" -DestinationPath "."
+            Expand-Archive -Path "$($this.DestinationPath)\agent.zip" -DestinationPath "$($this.DestinationPath)\"
         } catch {
             throw "Failed to extract $($this.DestinationPath)\agent.zip to $($this.DestinationPath)"
         }
 
         #Run Installer
         try {
-            Start-Process -FilePath "$($this.DestinationPath)\config.cmd" -ArgumentList "--url `"$($this.Uri)`" --auth pat --token `"$($this.PAT)`" --unattended --pool `"$($this.Pool)`" --runAsService"
+            Start-Process -FilePath "$($this.DestinationPath)\config.cmd" -ArgumentList "--url `"$($This.AccountUri)`" --auth pat --token `"$($this.PAT)`" --unattended --pool `"$($this.Pool)`" --runAsService"
         } catch {
             throw "Failed to configure the VSTS Agent"
         }
@@ -85,7 +92,7 @@ class VSTSAgent {
         return @{
             Pool = $This.Pool
             Path = $This.DestinationPath
-            Uri = $This.Uri
+            Uri = $This.AgentUri
         }
 
     }
