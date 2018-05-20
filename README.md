@@ -1,7 +1,19 @@
 # VSTSDsc
 A class-based Desired State Configuration Resource to deploy the VSTS Agent
 
-## Example
+## Resources
+
+### VSTSAgent
+
+#### Parameters
+
+* Pool (String, Required) - The Agent pool for which to add this agent to
+* DestinationPath (String, Required) - The local file path where the agent will be deployed to, must be a directory
+* PAT (String, Required) - The Personal Access Token for the user that will be used to register the VSTS Agent 
+* AgentUri (String, Required) - The URL where the Agent can be downloaded from
+* AccountUri (String, Required) - The URL of the VSTS Account
+
+#### Examples
 
 ```powershell
 VSTSAgent VSTSAgentInstall #ResourceName  
@@ -18,7 +30,7 @@ VSTSAgent VSTSAgentInstall #ResourceName
 
 0.4 - Support of running interactively (not as a service)  
 0.3 - Support for changing the agent name and working directory  
-0.2 - Pester tests for the module, remove zip file, add ensure to support uninstall  
+0.2 - Pester tests for the module, clean-up zip file, add ensure to support uninstall, BREAKING - PAT should be of type PSCredential  
 0.1 - The ability to deploy the vsts agent on Windows Server 2016 running PowerShell 5.1  
 
 
