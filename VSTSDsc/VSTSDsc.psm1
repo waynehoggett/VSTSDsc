@@ -91,8 +91,10 @@ class VSTSAgent {
 
         return @{
             Pool = $This.Pool
-            Path = $This.DestinationPath
-            Uri = $This.AgentUri
+            DestinationPath = $This.DestinationPath
+            AgentUri = $This.AgentUri
+            AccountUri = $This.AccountUri
+            ServiceName = $This.ServiceName
         }
 
     }
